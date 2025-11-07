@@ -14,5 +14,4 @@ pub struct TipRecord {
     pub tip_jar: Pubkey,
     pub bump: u8,
     pub total_tips: u128,
-    pub initialized: bool,
 }

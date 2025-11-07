@@ -18,4 +18,12 @@ pub mod tip_jar {
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         initialize::handler(ctx)
     }
+
+    pub fn tip(ctx: Context<Tip>, amount: u64) -> Result<()> {
+        tip::handler(ctx, amount)
+    }
+
+    pub fn delete_tip_record(ctx: Context<DeleteTipRecord>) -> Result<()> {
+        delete_tip_record::handler(ctx)
+    }
 }

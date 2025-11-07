@@ -6,4 +6,6 @@ pub enum TipError {
     NotEnoughLamports,
     #[msg("You've reached your max tipping limit for this creator. Reset your record to tip again.")]
     Overflow,
+    #[msg("You cannot tip zero lamports.")]
+    ZeroTipAmount,
 }
