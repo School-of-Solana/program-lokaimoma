@@ -3,6 +3,7 @@ use anchor_lang::system_program::{transfer, Transfer};
 
 use crate::error::TipError;
 use crate::state::{TipJar, TipRecord};
+use crate::TIP_RECORD_SEED;
 
 #[derive(Accounts)]
 pub struct Tip<'a> {
@@ -17,7 +18,7 @@ pub struct Tip<'a> {
         init_if_needed,
         space = 8 + TipRecord::INIT_SPACE,
         payer = tipper,
-        seeds = [b"tip-record", tipper.key().as_ref(), tip_jar.key().as_ref()],
+        seeds = [TIP_RECORD_SEED, tipper.key().as_ref(), tip_jar.key().as_ref()],
         bump
     )]
     pub tip_record: Account<'a, TipRecord>,
@@ -36,7 +37,7 @@ pub fn handler(ctx: Context<Tip>, amount: u64) -> Result<()> {
         ctx.accounts
             .tip_record
             .total_tips
-            .checked_add(amount as u128)
+            .checked_add(amount)
             .is_some(),
         TipError::Overflow
     );
@@ -58,7 +59,7 @@ pub fn handler(ctx: Context<Tip>, amount: u64) -> Result<()> {
         tip_record.tip_jar = ctx.accounts.tip_jar.key();
     }
 
-    tip_record.total_tips += amount as u128;
+    tip_record.total_tips += amount;
 
     Ok(())
 }

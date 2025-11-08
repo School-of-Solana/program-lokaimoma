@@ -1,12 +1,12 @@
 use anchor_lang::prelude::*;
 
-use crate::TipJar;
+use crate::{TipJar, TIP_JAR_SEED};
 
 #[derive(Accounts)]
 pub struct Initialize<'a> {
     #[account(mut)]
     pub creator: Signer<'a>,
-    #[account(init, space = 8 + TipJar::INIT_SPACE, payer = creator, seeds = [b"tipJar", creator.key().as_ref()], bump)]
+    #[account(init, space = 8 + TipJar::INIT_SPACE, payer = creator, seeds = [TIP_JAR_SEED, creator.key().as_ref()], bump)]
     pub tip_jar: Account<'a, TipJar>,
     pub system_program: Program<'a, System>,
 }

@@ -13,5 +13,5 @@ pub struct TipRecord {
     pub tipper: Pubkey,
     pub tip_jar: Pubkey,
     pub bump: u8,
-    pub total_tips: u128,
+    pub total_tips: u64,
 }
