@@ -20,6 +20,6 @@ pub struct DeleteTipRecord<'a> {
     pub system_program: Program<'a, System>,
 }
 
-pub fn handler(_ctx: Context<DeleteTip_Record>) -> Result<()> {
+pub fn handler(_ctx: Context<DeleteTipRecord>) -> Result<()> {
     Ok(())
 }

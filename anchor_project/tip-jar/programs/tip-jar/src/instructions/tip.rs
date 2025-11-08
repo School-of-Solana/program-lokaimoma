@@ -8,6 +8,9 @@ use crate::state::{TipJar, TipRecord};
 pub struct Tip<'a> {
     #[account(mut)]
     pub tipper: Signer<'a>,
+    /// CHECK: The creator of the tip jar. This is the account that will receive the tip.
+    /// The `has_one` constraint on the `tip_jar` account ensures that the `creator`
+    /// account provided is the legitimate owner of the tip jar.
     #[account(mut)]
     pub creator: AccountInfo<'a>,
     #[account(
@@ -43,10 +46,7 @@ pub fn handler(ctx: Context<Tip>, amount: u64) -> Result<()> {
         to: ctx.accounts.creator.to_account_info(),
     };
 
-    let cpi_ctx = CpiContext::new(
-        ctx.accounts.system_program.to_account_info(),
-        cpi_accounts,
-    );
+    let cpi_ctx = CpiContext::new(ctx.accounts.system_program.to_account_info(), cpi_accounts);
 
     transfer(cpi_ctx, amount)?;
 
