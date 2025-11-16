@@ -5,6 +5,9 @@ package_manager = "yarn"
 resolution = true
 skip-lint = false
 
+[programs.devnet]
+tip_jar = "DthHhMcvU2VX1uT8HUCbqBjbjC3hktVyPpUPSUxmKtMa"
+
 [programs.localnet]
 tip_jar = "HubzaEUtqJsik78CL7QLPP3hqo9CcvHrgdZD8NxVhmTN"
 
@@ -12,7 +15,7 @@ tip_jar = "HubzaEUtqJsik78CL7QLPP3hqo9CcvHrgdZD8NxVhmTN"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

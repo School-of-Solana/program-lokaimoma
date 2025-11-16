@@ -1,0 +1,314 @@
+{
+  "address": "DthHhMcvU2VX1uT8HUCbqBjbjC3hktVyPpUPSUxmKtMa",
+  "metadata": {
+    "name": "tip_jar",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "delete_tip_record",
+      "discriminator": [
+        216,
+        91,
+        229,
+        19,
+        103,
+        20,
+        170,
+        36
+      ],
+      "accounts": [
+        {
+          "name": "tipper",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "creator",
+          "relations": [
+            "tip_jar"
+          ]
+        },
+        {
+          "name": "tip_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  112,
+                  45,
+                  114,
+                  101,
+                  99,
+                  111,
+                  114,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tipper"
+              },
+              {
+                "kind": "account",
+                "path": "tip_jar"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tip_jar"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize",
+      "discriminator": [
+        175,
+        175,
+        109,
+        31,
+        13,
+        152,
+        155,
+        237
+      ],
+      "accounts": [
+        {
+          "name": "creator",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "tip_jar",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  112,
+                  74,
+                  97,
+                  114
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "creator"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "tip",
+      "discriminator": [
+        77,
+        164,
+        35,
+        21,
+        36,
+        121,
+        213,
+        51
+      ],
+      "accounts": [
+        {
+          "name": "tipper",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "creator",
+          "docs": [
+            "The `has_one` constraint on the `tip_jar` account ensures that the `creator`",
+            "account provided is the legitimate owner of the tip jar."
+          ],
+          "writable": true,
+          "relations": [
+            "tip_jar"
+          ]
+        },
+        {
+          "name": "tip_record",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  116,
+                  105,
+                  112,
+                  45,
+                  114,
+                  101,
+                  99,
+                  111,
+                  114,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "tipper"
+              },
+              {
+                "kind": "account",
+                "path": "tip_jar"
+              }
+            ]
+          }
+        },
+        {
+          "name": "tip_jar",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "TipJar",
+      "discriminator": [
+        1,
+        2,
+        42,
+        158,
+        102,
+        246,
+        174,
+        210
+      ]
+    },
+    {
+      "name": "TipRecord",
+      "discriminator": [
+        43,
+        243,
+        62,
+        130,
+        183,
+        4,
+        81,
+        185
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NotEnoughLamports",
+      "msg": "Tipper has fewer lamports than what he want's to tip."
+    },
+    {
+      "code": 6001,
+      "name": "Overflow",
+      "msg": "You've reached your max tipping limit for this creator. Reset your record to tip again."
+    },
+    {
+      "code": 6002,
+      "name": "ZeroTipAmount",
+      "msg": "You cannot tip zero lamports."
+    }
+  ],
+  "types": [
+    {
+      "name": "TipJar",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "creator",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TipRecord",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "tipper",
+            "type": "pubkey"
+          },
+          {
+            "name": "tip_jar",
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          },
+          {
+            "name": "total_tips",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "constants": [
+    {
+      "name": "SEED",
+      "type": "string",
+      "value": "\"anchor\""
+    },
+    {
+      "name": "TIP_JAR_SEED",
+      "type": {
+        "array": [
+          "u8",
+          6
+        ]
+      },
+      "value": "[116, 105, 112, 74, 97, 114]"
+    },
+    {
+      "name": "TIP_RECORD_SEED",
+      "type": {
+        "array": [
+          "u8",
+          10
+        ]
+      },
+      "value": "[116, 105, 112, 45, 114, 101, 99, 111, 114, 100]"
+    }
+  ]
+}

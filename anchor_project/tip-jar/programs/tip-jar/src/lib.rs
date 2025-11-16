@@ -9,7 +9,7 @@ pub use constants::*;
 pub use instructions::*;
 pub use state::*;
 
-declare_id!("HubzaEUtqJsik78CL7QLPP3hqo9CcvHrgdZD8NxVhmTN");
+declare_id!("DthHhMcvU2VX1uT8HUCbqBjbjC3hktVyPpUPSUxmKtMa");
 
 #[program]
 pub mod tip_jar {
