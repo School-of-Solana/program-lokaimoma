@@ -2,7 +2,8 @@
 
 **Deployed Frontend URL:** [https://program-lokaimoma.vercel.app/](https://program-lokaimoma.vercel.app/)
 
-**Solana Program ID:** DthHhMcvU2VX1uT8HUCbqBjbjC3hktVyPpUPSUxmKtMa
+**Solana Program ID:** DthHhMcvU2VX1uT8HUCbqBjbjC3hktVyPpUPSUxmKtMa   
+> The program is deployed on devnet.
 
 ## Project Overview
 
@@ -116,4 +117,4 @@ anchor test
 ```
 
 ### Additional Notes for Evaluators
-- None. Thank you for your time.
+- Thank you for your time.
