@@ -1,6 +1,6 @@
 # Project Description
 
-**Deployed Frontend URL:** [TODO: Link to your deployed frontend]
+**Deployed Frontend URL:** [https://program-lokaimoma.vercel.app/](https://program-lokaimoma.vercel.app/)
 
 **Solana Program ID:** DthHhMcvU2VX1uT8HUCbqBjbjC3hktVyPpUPSUxmKtMa
 
@@ -111,10 +111,9 @@ The testing approach uses the Anchor framework with Mocha and Assert to cover bo
 
 ### Running Tests
 ```bash
-# Commands to run your tests
+yarn install
 anchor test
 ```
 
 ### Additional Notes for Evaluators
-
-[TODO: Add any specific notes or context that would help evaluators understand your project better]
+- None. Thank you for your time.
