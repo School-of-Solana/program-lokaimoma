@@ -98,57 +98,6 @@ const CreatorSpace: NextPage = (props) => {
                       </p>
                     </div>
                   ))}
-                  {tipJarTipRecords.map((tipRecord) => (
-                    <div
-                      className="p-4 bg-base-200 rounded-lg shadow-md"
-                      key={tipRecord.publicKey.toString()}
-                    >
-                      <p className="font-semibold">Tipper:</p>
-                      <p className="font-mono text-sm break-all mb-2">
-                        {tipRecord.account.tipper.toString()}
-                      </p>
-                      <p className="font-semibold">Total Tips:</p>
-                      <p className="text-lg">
-                        {tipRecord.account.totalTips.toNumber() /
-                          LAMPORTS_PER_SOL}{" "}
-                        SOL
-                      </p>
-                    </div>
-                  ))}
-                  {tipJarTipRecords.map((tipRecord) => (
-                    <div
-                      className="p-4 bg-base-200 rounded-lg shadow-md"
-                      key={tipRecord.publicKey.toString()}
-                    >
-                      <p className="font-semibold">Tipper:</p>
-                      <p className="font-mono text-sm break-all mb-2">
-                        {tipRecord.account.tipper.toString()}
-                      </p>
-                      <p className="font-semibold">Total Tips:</p>
-                      <p className="text-lg">
-                        {tipRecord.account.totalTips.toNumber() /
-                          LAMPORTS_PER_SOL}{" "}
-                        SOL
-                      </p>
-                    </div>
-                  ))}
-                  {tipJarTipRecords.map((tipRecord) => (
-                    <div
-                      className="p-4 bg-base-200 rounded-lg shadow-md"
-                      key={tipRecord.publicKey.toString()}
-                    >
-                      <p className="font-semibold">Tipper:</p>
-                      <p className="font-mono text-sm break-all mb-2">
-                        {tipRecord.account.tipper.toString()}
-                      </p>
-                      <p className="font-semibold">Total Tips:</p>
-                      <p className="text-lg">
-                        {tipRecord.account.totalTips.toNumber() /
-                          LAMPORTS_PER_SOL}{" "}
-                        SOL
-                      </p>
-                    </div>
-                  ))}
                 </div>
               ) : (
                 <p>No tips received yet.</p>
