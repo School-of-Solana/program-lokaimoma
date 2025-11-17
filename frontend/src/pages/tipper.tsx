@@ -17,111 +17,172 @@ const TipperSpace: NextPage = (props) => {
     deleteTipRecord,
   } = useTipJarHooks();
   const walletConnected = wallet.connected;
+
   useEffect(() => {
     if (walletConnected) {
       getTipJars();
       getTipRecords();
     }
-  }, [wallet]);
+  }, [walletConnected]);
+
+  const handleTip = async (e) => {
+    e.preventDefault();
+    if (!currentJar) {
+      alert("Please select a tip jar first.");
+      return;
+    }
+    const tx = await tipCreator(amount, new PublicKey(currentJar));
+    alert(`Creator tipped (${tx}). Refetching creator history.`);
+    getTipRecords();
+    setAmount(0.0);
+    setCurrenctJar("");
+  };
 
   return (
-    <div>
+    <div className="container mx-auto p-4">
       <Head>
-        <title>Tipper space</title>
-        <meta name="description" content="Basic Functionality" />
+        <title>Tipper Space</title>
+        <meta name="description" content="Support creators by sending tips" />
       </Head>
-      <div className="flex flex-col gap-2">
-        <h3>Tipper space space</h3>
-        {!walletConnected && <p>Please connect wallet</p>}
-        <div className="flex flex-col overflow-scroll-y h-[20vh]">
-          <p>Tip jars</p>
-          {walletConnected &&
-            tipJars.map((tipJar) => (
-              <div
-                className="flex flex-col gap-6"
-                key={tipJar.publicKey.toString()}
-              >
-                <p>
-                  Creator: <span>{tipJar.account.creator.toString()}</span>
-                </p>
-                <p>
-                  Jar: <span>{tipJar.publicKey.toString()}</span>
-                </p>
-                <button
-                  className="btn"
-                  onClick={() => {
-                    setCurrenctJar(tipJar.publicKey.toString());
-                  }}
-                >
-                  Tip
-                </button>
-              </div>
-            ))}
-        </div>
 
-        <div className="flex flex-col overflow-scroll-y h-[20vh]">
-          <p>Tip records</p>
-          {walletConnected &&
-            tipRecords.map((tipRecord) => (
-              <div
-                className="flex flex-col gap-6"
-                key={tipRecord.publicKey.toString()}
-              >
-                <p>
-                  Jar: <span>{tipRecord.account.tipJar.toString()}</span>
-                </p>
-                <p>
-                  Total tips:{" "}
-                  <span>
-                    {tipRecord.account.totalTips.toNumber() / LAMPORTS_PER_SOL}{" "}
-                    sol(s)
-                  </span>
-                </p>
-                <button
-                  className="btn"
-                  onClick={async () => {
-                    const tx = await deleteTipRecord(tipRecord.account.tipJar);
-                    alert(`Tip record deleted (${tx}). Refetching records`);
-                    getTipRecords();
-                  }}
-                >
-                  Delete
-                </button>
-              </div>
-            ))}
+      <h1 className="text-3xl font-bold text-center mb-8">Tipper Space</h1>
+
+      {!walletConnected ? (
+        <div className="text-center p-8 bg-base-200 rounded-lg">
+          <p className="text-xl">Please connect your wallet to send tips.</p>
         </div>
-        <input
-          value={currentJar}
-          disabled
-          name="creatorTipJarAddr"
-          type="text"
-          className="text-black"
-          placeholder="Enter creator's tip jar address"
-          required
-        />
-        <input
-          name="amount"
-          type="number"
-          disabled={!currentJar}
-          className="text-black"
-          value={amount}
-          onChange={(e) => setAmount(parseFloat(e.target.value) || 0.0)}
-          placeholder="Enter tip amount"
-          required
-        />
-        <button
-          className="btn"
-          onClick={async (e) => {
-            e.preventDefault();
-            const tx = await tipCreator(amount, new PublicKey(currentJar));
-            alert(`creator tipped (${tx}). Refetching creator history.`);
-            getTipRecords();
-          }}
-          disabled={amount <= 0}
-        >
-          Tip creator
-        </button>
-      </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Tip Jars Section */}
+          <div>
+            <h2 className="text-2xl font-semibold mb-4">Available Tip Jars</h2>
+            <div className="flex flex-col gap-4 max-h-[60vh] overflow-y-auto p-2">
+              {tipJars.length > 0 ? (
+                tipJars.map((tipJar) => (
+                  <div
+                    key={tipJar.publicKey.toString()}
+                    className={`p-4 bg-base-200 rounded-lg shadow-md transition-all ${
+                      currentJar === tipJar.publicKey.toString()
+                        ? "ring-2 ring-primary-focus"
+                        : ""
+                    }`}
+                  >
+                    <p className="font-semibold">Creator:</p>
+                    <p className="font-mono text-sm break-all mb-2">
+                      {tipJar.account.creator.toString()}
+                    </p>
+                    <p className="font-semibold">Jar Address:</p>
+                    <p className="font-mono text-sm break-all mb-4">
+                      {tipJar.publicKey.toString()}
+                    </p>
+                    <button
+                      className="btn btn-sm btn-primary"
+                      onClick={() => {
+                        setCurrenctJar(tipJar.publicKey.toString());
+                      }}
+                    >
+                      Select to Tip
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p>No tip jars found.</p>
+              )}
+            </div>
+          </div>
+
+          {/* Tipping Form and Records Section */}
+          <div>
+            {/* Tipping Form */}
+            <div className="p-6 bg-base-200 rounded-lg shadow-md mb-8">
+              <h2 className="text-2xl font-semibold mb-4">Send a Tip</h2>
+              <form onSubmit={handleTip} className="flex flex-col gap-4">
+                <div>
+                  <label htmlFor="creatorTipJarAddr" className="label">
+                    <span className="label-text">Selected Tip Jar</span>
+                  </label>
+                  <input
+                    id="creatorTipJarAddr"
+                    value={currentJar}
+                    disabled
+                    type="text"
+                    className="input input-bordered w-full"
+                    placeholder="Select a jar from the list"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="amount" className="label">
+                    <span className="label-text">Amount (SOL)</span>
+                  </label>
+                  <input
+                    id="amount"
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    disabled={!currentJar}
+                    className="input input-bordered w-full"
+                    value={amount}
+                    onChange={(e) =>
+                      setAmount(parseFloat(e.target.value) || 0.0)
+                    }
+                    placeholder="Enter tip amount"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={amount <= 0 || !currentJar}
+                >
+                  Tip Creator
+                </button>
+              </form>
+            </div>
+
+            {/* User's Tip Records */}
+            <div>
+              <h2 className="text-2xl font-semibold mb-4">Your Tip History</h2>
+              <div className="flex flex-col gap-4 max-h-[40vh] overflow-y-auto p-2">
+                {tipRecords.length > 0 ? (
+                  tipRecords.map((tipRecord) => (
+                    <div
+                      key={tipRecord.publicKey.toString()}
+                      className="p-4 bg-base-200 rounded-lg shadow-md"
+                    >
+                      <p className="font-semibold">Tipped Jar:</p>
+                      <p className="font-mono text-sm break-all mb-2">
+                        {tipRecord.account.tipJar.toString()}
+                      </p>
+                      <p className="font-semibold">Total Tipped:</p>
+                      <p className="text-lg mb-4">
+                        {tipRecord.account.totalTips.toNumber() /
+                          LAMPORTS_PER_SOL}{" "}
+                        SOL
+                      </p>
+                      <button
+                        className="btn btn-sm btn-error"
+                        onClick={async () => {
+                          const tx = await deleteTipRecord(
+                            tipRecord.account.tipJar,
+                          );
+                          alert(
+                            `Tip record deleted (${tx}). Refetching records`,
+                          );
+                          getTipRecords();
+                        }}
+                      >
+                        Delete Record
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <p>You haven&apos;t tipped anyone yet.</p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

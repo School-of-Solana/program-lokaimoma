@@ -15,10 +15,6 @@ const WalletMultiButtonDynamic = dynamic(
 export const AppBar: React.FC = () => {
   const { autoConnect, setAutoConnect } = useAutoConnect();
   const [isNavOpen, setIsNavOpen] = useState(false);
-
-  useEffect(() => {
-    setAutoConnect(false);
-  }, []);
   return (
     <div>
       {/* NavBar / Header */}
@@ -102,11 +98,6 @@ export const AppBar: React.FC = () => {
             <NavElement
               label="Home"
               href="/"
-              navigationStarts={() => setIsNavOpen(false)}
-            />
-            <NavElement
-              label="Basics"
-              href="/basics"
               navigationStarts={() => setIsNavOpen(false)}
             />
             <WalletMultiButtonDynamic className="btn-ghost btn-sm rounded-btn text-lg mr-6 " />

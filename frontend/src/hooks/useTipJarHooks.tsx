@@ -123,6 +123,7 @@ export function useTipJarHooks() {
         programId,
       );
       const tipJar = await program.account.tipJar.fetchNullable(tipJarPda);
+      tipJar["publicKey"] = tipJarPda;
       setTipJar(tipJar);
     } catch (error) {
       console.error("[ERROR: Get tip jar] ", error);
